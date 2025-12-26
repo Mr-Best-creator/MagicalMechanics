@@ -4,9 +4,8 @@ import com.github.mrbestcreator.magicalmechanics.MagicalMechanics;
 import com.github.mrbestcreator.magicalmechanics.api.block.BaseBlock;
 import com.github.mrbestcreator.magicalmechanics.api.block.BaseEntityBlock;
 import com.github.mrbestcreator.magicalmechanics.api.block.BlockEntry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -20,7 +19,7 @@ public class BlockRegistryImpl {
     
     private static final List<BlockEntry> QUEUE = new ArrayList<>();
     public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(BuiltInRegistries.BLOCK, MagicalMechanics.MODID);
+            DeferredRegister.create(Registries.BLOCK, MagicalMechanics.MODID);
     private static final Map<String, DeferredHolder<Block, Block>> BLOCKS_BY_ID = new HashMap<>();
     
 //    UnifiedRegistryImplからデータを受け取り貯める
@@ -54,6 +53,9 @@ public class BlockRegistryImpl {
     
     public static DeferredHolder<Block, Block> getDeferredHolder(String id) {
         DeferredHolder<Block, Block> h = BLOCKS_BY_ID.get(id);
-        return h != null ? h : null;
+        if (h == null) {
+            throw new IllegalStateException("Block not registered: " + id);
+        }
+        return h;
     }
 }
