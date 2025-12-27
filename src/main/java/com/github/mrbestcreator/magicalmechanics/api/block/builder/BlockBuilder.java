@@ -1,6 +1,7 @@
 package com.github.mrbestcreator.magicalmechanics.api.block.builder;
 
 import com.github.mrbestcreator.magicalmechanics.api.block.*;
+import com.github.mrbestcreator.magicalmechanics.api.energy.EnergyHook;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -14,6 +15,7 @@ public class BlockBuilder {
     private BlockBehaviour.Properties blockProp;
     private BlockEntityType.BlockEntitySupplier<? extends BaseBlockEntity> blockEntitySupplier;
     private EnergyDef energy;
+    private final List<EnergyHook> energyHooks = new ArrayList<>();
     private InventoryDef inventory;
     private Function<BaseBlockEntity, BlockLogic> logic;
     private final List<BlockHook> hooks = new ArrayList<>();
@@ -42,6 +44,11 @@ public class BlockBuilder {
         return this;
     }
     
+    public BlockBuilder energyHook(EnergyHook hook) {
+        this.energyHooks.add(hook);
+        return this;
+    }
+    
     public BlockBuilder inventory(Consumer<InventoryDef> c) {
         this.inventory = new InventoryDef();
         c.accept(this.inventory);
@@ -63,7 +70,7 @@ public class BlockBuilder {
         if (blockProp == null) {
             blockProp = BlockBehaviour.Properties.of();
         }
-        return new BlockEntry(id, blockProp, blockEntitySupplier, energy, inventory, logic, List.copyOf(hooks));
+        return new BlockEntry(id, blockProp, blockEntitySupplier, energy, List.copyOf(energyHooks), inventory, logic, List.copyOf(hooks));
     }
     
 }

@@ -10,10 +10,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BlockEntityRegistryImpl {
     
@@ -70,6 +67,10 @@ public class BlockEntityRegistryImpl {
     
     public static BlockEntityType<?> get(BlockState state) {
         return TYPES_BY_BLOCK.get(state.getBlock());
+    }
+    
+    public static Set<Block> getAllBlocks() {
+        return TYPES_BY_BLOCK.keySet();
     }
     
     

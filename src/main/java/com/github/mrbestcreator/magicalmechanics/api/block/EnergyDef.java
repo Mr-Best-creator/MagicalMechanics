@@ -1,8 +1,8 @@
 package com.github.mrbestcreator.magicalmechanics.api.block;
 
 public class EnergyDef {
-    public int capacity;
-    public int maxInput;
-    public int maxOutput;
+    public long capacity;
+    public long maxInput;
+    public long maxOutput;
     public int usagePerTick;
 }
