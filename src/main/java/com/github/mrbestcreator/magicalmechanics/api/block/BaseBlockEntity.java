@@ -2,10 +2,12 @@ package com.github.mrbestcreator.magicalmechanics.api.block;
 
 import com.github.mrbestcreator.magicalmechanics.registry.block.BlockEntityRegistryImpl;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class BaseBlockEntity extends BlockEntity {
     
@@ -50,5 +52,23 @@ public class BaseBlockEntity extends BlockEntity {
         for (BlockHook hook : e.hooks()) {
             hook.afterTick(ctx);
         }
+    }
+    
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        super.saveAdditional(tag, registries);
+        if (logic instanceof INBTSerializableLogic serializable) {
+            serializable.saveLogic(tag);
+        }
+        
+    }
+    
+    @Override
+    protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        super.loadAdditional(tag, registries);
+        if (logic instanceof INBTSerializableLogic serializable) {
+            serializable.loadLogic(tag);
+        }
+        
     }
 }
